@@ -158,3 +158,72 @@ open_files  42  user  5r     REG    1,4     4096     890   /path/to/file3.txt
 - **SIZE/OFF:** The size of the file or the file offset.
 - **NODE:** The inode number.
 - **NAME:** The name of the file.
+
+## Static Variables in C
+
+### Explanation
+
+1. **Scope:**
+   - **Inside a Function:** A static variable declared inside a function has a local scope, meaning it is only accessible within that function.
+   - **Outside a Function:** A static variable declared outside a function (at the file level) has file scope, meaning it is only accessible within that file.
+
+2. **Lifetime:**
+   - The lifetime of a static variable is the entire duration of the program. It retains its value between function calls and throughout the program's execution.
+
+3. **Initialization:**
+   - Static variables are initialized only once. If not explicitly initialized, they are automatically initialized to zero.
+
+### Why Use Static Variables?
+
+1. **Persistent State:**
+   - Static variables retain their value between function calls, making them useful for maintaining state information across multiple invocations of a function.
+
+2. **Encapsulation:**
+   - Static variables declared at the file level are not accessible from other files, helping to encapsulate and protect data.
+
+3. **Avoid Global Variables:**
+   - Static variables can be used to limit the scope of variables that need to persist for the duration of the program, avoiding the pitfalls of global variables.
+
+### Usage Examples
+
+1. **Inside a Function:**
+
+   ```c
+   #include <stdio.h>
+
+   void counter() {
+       static int count = 0; // Static variable
+       count++;
+       printf("Count: %d\n", count);
+   }
+
+   int main() {
+       counter(); // Output: Count: 1
+       counter(); // Output: Count: 2
+       counter(); // Output: Count: 3
+       return 0;
+   }
+   ```
+
+   - In this example, the `count` variable retains its value between calls to `counter()`.
+
+2. **Outside a Function:**
+
+   ```c
+   #include <stdio.h>
+
+   static int globalCount = 0; // Static global variable
+
+   void increment() {
+       globalCount++;
+       printf("Global Count: %d\n", globalCount);
+   }
+
+   int main() {
+       increment(); // Output: Global Count: 1
+       increment(); // Output: Global Count: 2
+       return 0;
+   }
+   ```
+
+   - Here, `globalCount` is only accessible within the file it is declared in, providing encapsulation.
