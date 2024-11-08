@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yusudemi <yusudemi@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/27 22:10:15 by yusudemi          #+#    #+#             */
-/*   Updated: 2024/10/30 13:07:31 by yusudemi         ###   ########.fr       */
+/*   Created: 2024/11/02 19:20:03 by yusudemi          #+#    #+#             */
+/*   Updated: 2024/11/08 18:45:59 by yusudemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,18 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1	
+#  define BUFFER_SIZE 1000000
 # endif
 
 # include <stddef.h>
-// debug
 # include <stdio.h>
 
-typedef struct s_line_data
-{
-	char	*line;
-	size_t	size;
-}	t_line_data;
-
 char	*get_next_line(int fd);
-char	*ft_strsjoin(char *s1, size_t size1, char *s2, size_t size2);
-char	*ft_strnl(char *str);
-char	*ft_substr(char const *str, unsigned int start);
+void	*ft_free(char *buffer);
+size_t	ft_strlen(char *str);
+char	*ft_strnl(char	*str);
+char	*ft_strjoin(char *buffer, size_t buffer_len,
+			char *reader_buffer, size_t reader_buffer_size);
+char	*ft_substr(char *str, size_t start);
 
 #endif

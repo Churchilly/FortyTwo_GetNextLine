@@ -5,44 +5,41 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yusudemi <yusudemi@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 00:57:11 by yusudemi          #+#    #+#             */
-/*   Updated: 2024/10/30 11:24:47 by yusudemi         ###   ########.fr       */
+/*   Created: 2024/11/01 16:05:19 by yusudemi          #+#    #+#             */
+/*   Updated: 2024/11/08 17:36:43 by yusudemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
-#include <stdbool.h>
 #include <stdlib.h>
 
-static bool	ft_strncpy(char *dst, char *src, size_t size)
+void	*ft_free(char *buffer)
 {
-	size_t	i;
+	char	*p;
 
-	i = 0;
-	while (i < size && src[i])
+	p = buffer;
+	if (buffer)
 	{
-		dst[i] = src[i];
-		i++;
+		while (*p)
+			*p++ = 0;
+		free(buffer);
 	}
-	dst[i] = '\0';
-	return (i);
+	return (NULL);
 }
 
-char	*ft_strsjoin(char *s1, size_t size1, char *s2, size_t size2)
+size_t	ft_strlen(char *str)
 {
-	char	*res;
+	char	*p;
 
-	res = (char *)malloc(sizeof(char) * (size1 + size2 + 1));
-	if (!res)
-		return (NULL);
-	ft_strncpy(res, s1, size1);
-	ft_strncpy(&res[size1], s2, size2);
-	if (s1)
-		free(s1);
-	return (res);
+	if (!str)
+		return (0);
+	p = str;
+	while (*p)
+		p++;
+	return (p - str);
 }
 
-char	*ft_strnl(char *str)
+char	*ft_strnl(char	*str)
 {
 	if (!str)
 		return (NULL);
@@ -55,18 +52,52 @@ char	*ft_strnl(char *str)
 	return (str);
 }
 
-char	*ft_substr(char const *str, unsigned int start)
+char	*ft_strjoin(char *buffer, size_t buffer_len,
+					char *reader_buffer, size_t reader_buffer_size)
 {
-	char	*sub;
-	size_t	sub_len;
+	char	*res;
+	size_t	i;
+	size_t	j;
 
-	sub_len = 0;
-	while (*(str + start + sub_len))
-		sub_len++;
-	sub = malloc(sizeof(char) * (sub_len + 1));
-	if (!sub)
+	res = malloc(sizeof(char) * (buffer_len + reader_buffer_size + 1));
+	if (!res)
+		return (ft_free(buffer));
+	i = 0;
+	while (i < buffer_len)
+	{
+		res[i] = buffer[i];
+		i++;
+	}
+	j = 0;
+	while (j < reader_buffer_size)
+	{
+		res[i + j] = reader_buffer[j];
+		j++;
+	}
+	res[i + j] = '\0';
+	ft_free(buffer);
+	return (res);
+}
+
+char	*ft_substr(char *str, size_t start)
+{
+	char	*res;
+	char	*p;
+	size_t	res_len;
+
+	if (*(str + start) == '\0')
 		return (NULL);
-	while (*(str + start++))
-		*(sub)++ = *(str + start);
-	return (sub);
+	res_len = ft_strlen((str + start));
+	res = malloc(sizeof(char) * (res_len + 1));
+	if (!res)
+		return (NULL);
+	p = res;
+	while (*(str + start))
+	{
+		*p = *(str + start);
+		start++;
+		p++;
+	}
+	*p = '\0';
+	return (res);
 }
