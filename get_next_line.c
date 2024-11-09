@@ -6,14 +6,13 @@
 /*   By: yusudemi <yusudemi@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:56:19 by yusudemi          #+#    #+#             */
-/*   Updated: 2024/11/08 18:45:19 by yusudemi         ###   ########.fr       */
+/*   Updated: 2024/11/09 02:58:35 by yusudemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 #include <stdlib.h>
-#include <fcntl.h>
 
 static char	*ft_next_buffer(char *buffer, char *line)
 {
@@ -36,7 +35,7 @@ static char	*ft_get_line(char *buffer)
 {
 	char	*line;
 	size_t	size;
-	
+
 	size = 0;
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
@@ -82,7 +81,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-		return (NULL);
+		return (ft_free(buffer), buffer = NULL);
 	if (!buffer)
 	{
 		buffer = malloc(sizeof(char) * 1);
@@ -90,8 +89,6 @@ char	*get_next_line(int fd)
 			return (NULL);
 		*buffer = '\0';
 	}
-	if (!fd)
-		fd = STDIN_FILENO;
 	buffer_nl = ft_strnl(buffer);
 	if (!buffer_nl || *buffer_nl != '\n')
 		buffer = ft_reader(fd, buffer, buffer_nl - buffer);
@@ -102,10 +99,4 @@ char	*get_next_line(int fd)
 	line = ft_get_line(buffer);
 	buffer = ft_next_buffer(buffer, line);
 	return (line);
-}
-
-int main()
-{
-	int fd = open("test.txt", O_RDONLY);
-	free(get_next_line(fd));
 }
